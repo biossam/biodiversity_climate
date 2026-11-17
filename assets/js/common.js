@@ -99,7 +99,8 @@
     document.body.insertBefore(h, document.body.firstChild);
     var f = document.createElement("footer");
     f.className = "foot";
-    f.innerHTML = '<div class="wrap"><p>' + BC.esc(D.credit) + "</p><p>LEGO®는 LEGO Group의 상표입니다. 이 사이트의 그림·놀이·퀴즈는 수업을 돕기 위해 새로 만든 것입니다.</p></div>";
+    f.innerHTML = '<div class="wrap"><p>' + BC.esc(D.credit) + "</p><p>LEGO®는 LEGO Group의 상표입니다. 이 사이트의 그림·놀이·퀴즈는 수업을 돕기 위해 새로 만든 것입니다.</p>" +
+      (BC.student ? '<p><a href="./?teacher=1">선생님 화면으로</a></p>' : "") + "</div>";
     document.body.appendChild(f);
   };
 
