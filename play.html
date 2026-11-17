@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>놀이터 · 생물 다양성과 기후변화</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%235aa7e0'/><path d='M28 42c6-6 14-5 17 0s-2 9 3 13-1 10-7 9-12-6-13-11z' fill='%237cc576'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gothic+A1:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .gpick { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
+  .gpick button { border: 1.5px solid var(--line); background: #fff; border-radius: 999px; padding: 8px 16px; font-weight: 800; }
+  .gpick button[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .game { display: none; } .game.on { display: block; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  /* 서식지 */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 14px 0; }
+  .tile { border: 2px solid var(--line); border-radius: 16px; background: #fff; padding: 14px; text-align: center; font-weight: 800; transition: .3s; }
+  .tile .e { font-size: 42px; display: block; }
+  .tile.lost { background: repeating-linear-gradient(45deg, #f4efe4, #f4efe4 8px, #ebe4d4 8px, #ebe4d4 16px); color: var(--mute); cursor: pointer; border-style: dashed; }
+  .tile.lost .e { filter: grayscale(1); opacity: .35; }
+  .tile.lost::after { content: "눌러서 지키기"; display: block; font-size: 12px; color: #c0563f; margin-top: 4px; }
+  .mood { display: flex; align-items: center; gap: 14px; }
+  .meter { flex: 1; height: 18px; background: #eee6d6; border-radius: 999px; overflow: hidden; }
+  .meter i { display: block; height: 100%; background: var(--c); transition: .4s; border-radius: 999px; }
+  .event { background: #fff4e5; border: 1.5px solid #f2c98f; border-radius: 14px; padding: 12px 14px; margin: 10px 0; font-weight: 700; }
+  .fix { display: grid; gap: 8px; margin-top: 10px; }
+  .fix button { text-align: left; border: 1.5px solid var(--line); background: #fff; border-radius: 12px; padding: 10px 12px; font-weight: 700; }
+  /* 온도 */
+  .thermo { display: grid; grid-template-columns: 220px 1fr; gap: 20px; align-items: center; }
+  @media (max-width: 640px) { .thermo { grid-template-columns: 1fr; } }
+  input[type=range] { width: 100%; accent-color: var(--c); height: 28px; }
+  .fx { display: grid; gap: 8px; }
+  .fx div { display: flex; gap: 10px; align-items: center; background: #fff; border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 12px; transition: .3s; }
+  .fx div.off { opacity: .35; }
+  /* 꿀벌 */
+  .garden { position: relative; background: linear-gradient(#cfe9f7, #e9f6e2 55%, #cfe7b8); border-radius: 18px; height: 360px; overflow: hidden; border: 1.5px solid var(--line); user-select: none; }
+  .flower { position: absolute; font-size: 38px; cursor: pointer; transform: translate(-50%, -50%); transition: transform .2s, filter .6s; line-height: 1; }
+  .flower:hover { transform: translate(-50%, -50%) scale(1.15); }
+  .flower.wilt { filter: grayscale(1) brightness(.8); transform: translate(-50%, -50%) rotate(25deg); cursor: default; }
+  .flower .tag { position: absolute; left: 50%; top: -14px; transform: translateX(-50%); font-size: 13px; }
+  .beeg { position: absolute; font-size: 34px; transition: left .35s, top .35s; transform: translate(-50%, -50%); pointer-events: none; z-index: 2; }
+  .hud { display: flex; gap: 16px; flex-wrap: wrap; font-weight: 800; margin: 10px 0; }
+  /* 거북 */
+  .nest { display: grid; grid-template-columns: repeat(10, minmax(0, 52px)); gap: 6px; margin: 14px 0; }
+  .nest span { aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 800; color: #fff; transition: .3s; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; margin-right: 14px; font-weight: 700; font-size: 14px; }
+  .legend i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div style="margin:32px 0 0">
+    <p class="kicker">해 보며 알아보기</p>
+    <h1>놀이터</h1>
+    <p class="mute">수업 전·후에 짧게 해 보며 기후 변화가 동물에게 어떤 일을 일으키는지 느껴 봐요.</p>
+  </div>
+  <div class="gpick" role="tablist">
+    <button data-g="habitat">🏡 서식지 지키기</button>
+    <button data-g="thermo">🌡 지구 온도 조절기</button>
+    <button data-g="bee">🐝 꿀벌 수분 놀이</button>
+    <button data-g="turtle">🐢 거북 알 모래 온도</button>
+  </div>
+
+  <!-- 서식지 지키기 -->
+  <section class="game card" id="g-habitat">
+    <h2>서식지 지키기 <span class="chip">1~5차시</span></h2>
+    <p class="mute">동물을 고르고 <b>기후 변화 카드</b>를 뽑아 보세요. 서식지 요소가 하나씩 사라지면, 사라진 칸을 눌러 알맞은 해결책을 골라 지켜 내요.</p>
+    <div class="row" id="h-animals"></div>
+    <div class="tiles" id="h-tiles"></div>
+    <div class="mood"><div id="h-face"></div><div style="flex:1"><b id="h-say"></b><div class="meter"><i id="h-meter"></i></div></div></div>
+    <div id="h-event"></div>
+    <p class="row" style="margin-top:12px"><button class="btn c" id="h-draw">🃏 기후 변화 카드 뽑기</button><button class="btn line" id="h-reset">처음부터</button></p>
+  </section>
+
+  <!-- 지구 온도 조절기 -->
+  <section class="game card" id="g-thermo">
+    <h2>지구 온도 조절기 <span class="chip">1~2차시</span></h2>
+    <p class="mute">온실가스를 늘리거나 줄여 보세요. 지구가 뜨거워질수록 어떤 일이 생기는지 살펴봐요.</p>
+    <div class="thermo">
+      <div style="text-align:center"><svg id="t-earth" viewBox="0 0 200 200" width="200" height="200"></svg><div class="hand" style="font-size:30px" id="t-temp"></div></div>
+      <div>
+        <label><b>온실가스 양</b> <span id="t-lv" class="chip"></span><input type="range" id="t-gas" min="0" max="4" step="1" value="1"></label>
+        <div class="row mute" style="justify-content:space-between;font-size:13px;margin-bottom:10px"><span>적게</span><span>많이</span></div>
+        <div class="fx" id="t-fx"></div>
+        <p class="mute" style="font-size:13px;margin-top:10px">※ 이해를 돕기 위해 단순하게 나타낸 놀이예요. 실제 변화는 지역마다 다르게 나타나요.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 꿀벌 -->
+  <section class="game card" id="g-bee">
+    <h2>꿀벌 수분 놀이 <span class="chip">3차시</span></h2>
+    <p class="mute">꽃을 눌러 꽃가루를 묻히고, <b>같은 종류의 다른 꽃</b>을 누르면 수분이 되어 열매가 열려요. <b>폭염</b>을 켜면 꽃이 빨리 시들어요. 30초 동안 열매를 몇 개 맺게 할 수 있을까요?</p>
+    <div class="hud"><span>⏱ <span id="b-time">30</span>초</span><span>🍎 열매 <span id="b-fruit">0</span>개</span><span>🌼 꽃가루: <span id="b-carry">없음</span></span></div>
+    <div class="garden" id="b-garden"><span class="beeg" id="b-bee" style="left:50%;top:50%">🐝</span></div>
+    <p class="row" style="margin-top:12px"><button class="btn c" id="b-start">▶ 시작</button><label class="picks"><label><input type="checkbox" id="b-heat"> 🔥 폭염과 가뭄</label></label></p>
+    <div id="b-result"></div>
+  </section>
+
+  <!-- 거북 -->
+  <section class="game card" id="g-turtle">
+    <h2>거북 알 모래 온도 실험 <span class="chip">5차시</span></h2>
+    <p class="mute">바다거북은 알이 묻힌 모래의 온도에 따라 암컷과 수컷이 정해져요. 모래 온도를 바꾸고 그늘막을 세워 보세요.</p>
+    <label><b>모래 온도</b> <span class="chip" id="u-t"></span><input type="range" id="u-temp" min="26" max="34" step="0.5" value="29"></label>
+    <p class="picks" style="margin:8px 0"><label><input type="checkbox" id="u-shade"> ⛱ 그늘막 세우기 (모래 온도를 약 2도 낮춰요)</label></p>
+    <div class="nest" id="u-nest"></div>
+    <p class="legend"><span><i style="background:#e2687a"></i>암컷</span><span><i style="background:#3b82b8"></i>수컷</span><span><i style="background:#b9b1a2"></i>깨어나지 못한 알</span></p>
+    <p id="u-say" style="font-weight:800"></p>
+    <p class="mute" style="font-size:13px">※ 약 29℃에서 암수가 반반쯤 태어나고, 따뜻할수록 암컷이 많아진다고 알려져 있어요. 종과 지역에 따라 조금씩 달라요.</p>
+  </section>
+</main>
+<script src="data/lessons.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/play.js"></script>
+</body>
+</html>

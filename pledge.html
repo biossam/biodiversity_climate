@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>실천 다짐 · 생물 다양성과 기후변화</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%235aa7e0'/><path d='M28 42c6-6 14-5 17 0s-2 9 3 13-1 10-7 9-12-6-13-11z' fill='%237cc576'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gothic+A1:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .plist { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .plist label { display: flex; gap: 10px; align-items: center; background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 14px; font-weight: 700; cursor: pointer; }
+  .plist label:has(input:checked) { border-color: var(--c); background: var(--soft); }
+  .plist input { width: 20px; height: 20px; accent-color: var(--c); }
+  table.week { border-collapse: separate; border-spacing: 4px; width: 100%; }
+  table.week th { font-size: 13px; color: var(--mute); font-weight: 800; }
+  table.week td.p { font-weight: 700; font-size: 14px; padding-right: 8px; }
+  table.week button { width: 100%; min-width: 34px; aspect-ratio: 1; border: 1.5px solid var(--line); background: #fff; border-radius: 10px; font-size: 18px; }
+  table.week button.on { background: var(--soft); border-color: var(--c); }
+  #cardcv { width: 100%; max-width: 560px; border-radius: 18px; border: 1.5px solid var(--line); display: block; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div style="margin:32px 0 12px">
+    <p class="kicker">작은 행동이 모이면 세상이 바뀌어요</p>
+    <h1>실천 다짐</h1>
+    <p class="mute">동물들의 집을 지키기 위해 내가 지킬 약속을 3개 골라요. 쓴 내용은 이 기기에만 저장돼요.</p>
+  </div>
+
+  <section class="card" style="margin-top:20px">
+    <h2>① 약속 고르기 <span class="chip" id="cnt"></span></h2>
+    <div class="plist" id="plist"></div>
+    <label class="field" style="margin-top:14px"><span>나만의 약속 (선택)</span><input type="text" id="mine" placeholder="예: 급식 먹을 만큼만 받기"></label>
+  </section>
+
+  <section class="card sec">
+    <h2>② 일주일 실천 기록</h2>
+    <p class="mute">지킨 날에 눌러 🌱을 심어요.</p>
+    <div class="tscroll"><table class="week" id="week"></table></div>
+    <p style="margin-top:10px"><button class="btn line" id="clearweek">새 주 시작 (기록 비우기)</button></p>
+  </section>
+
+  <section class="card sec">
+    <h2>③ 다짐 카드 만들기</h2>
+    <div class="grid g2" style="align-items:start">
+      <div>
+        <label class="field"><span>이름 (또는 별명)</span><input type="text" id="nm"></label>
+        <label class="field"><span>내가 지키고 싶은 동물</span>
+          <div class="picks" id="ani"></div></label>
+        <label class="field"><span>한 줄 다짐</span><input type="text" id="line" placeholder="예: 나는 북극곰의 얼음을 지키는 환경 건축가!"></label>
+        <p class="row" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn c" id="save">🖼 카드 그림으로 저장</button></p>
+      </div>
+      <canvas id="cardcv" width="1080" height="1350"></canvas>
+    </div>
+  </section>
+</main>
+<script src="data/lessons.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/pledge.js"></script>
+</body>
+</html>

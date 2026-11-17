@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>생물 다양성과 기후변화</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%235aa7e0'/><path d='M28 42c6-6 14-5 17 0s-2 9 3 13-1 10-7 9-12-6-13-11z' fill='%237cc576'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gothic+A1:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <p class="kicker">5–6학년 · 6차시 프로젝트 · Play2Change!</p>
+      <h1>생물 다양성과<br>기후변화</h1>
+      <p class="lead">지구가 뜨거워지면 동물들의 집은 어떻게 될까요? 북극곰·꿀벌·벵갈호랑이·바다거북이 처한 위기를 알아보고, 브릭과 재활용 재료로 동물을 지키는 해결책을 만들어요.</p>
+      <p style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn" href="lesson.html?l=1">1차시부터 시작</a>
+        <a class="btn line" href="play.html">놀이터 가기</a>
+      </p>
+    </div>
+    <div class="hero-faces" id="faces"></div>
+  </section>
+
+  <section class="sec">
+    <h2>6차시 길잡이</h2>
+    <div class="grid g3" id="cards"></div>
+  </section>
+
+  <section class="sec">
+    <h2>매 차시는 이렇게 흘러가요</h2>
+    <div class="flow">
+      <div><b>① 마음 열기</b>사진을 보며 질문을 나눠요.</div>
+      <div><b>② 위기 알아보기</b>영상을 보고 오늘의 핵심 단어를 익혀요.</div>
+      <div><b>③ 해결책 만들기</b>스케치하고 브릭과 재활용 재료로 만들어요.</div>
+      <div><b>④ 전시회 열기</b>갤러리 워크로 칭찬을 주고받아요.</div>
+      <div><b>⑤ 퀴즈로 정리</b>퀴즈를 풀고 배지를 모아요.</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>내 배지</h2>
+    <p class="mute">활동지를 ‘다 했어요’로 마치거나 퀴즈를 모두 맞히면 그 차시 배지를 받아요. 배지는 이 기기에만 저장돼요.</p>
+    <div class="card"><div class="badges" id="badges"></div></div>
+  </section>
+
+  <section class="sec grid g3">
+    <a class="card" style="text-decoration:none" href="words.html"><h3>📖 개념 사전</h3><p class="mute">온실가스, 서식지, 수분, 해수면 상승… 6차시 핵심 단어를 한곳에.</p></a>
+    <a class="card" style="text-decoration:none" href="play.html"><h3>🎮 놀이터</h3><p class="mute">서식지 지키기, 지구 온도 조절기, 꿀벌 수분 놀이, 거북 알 모래 온도 실험.</p></a>
+    <a class="card" style="text-decoration:none" href="pledge.html"><h3>🌱 실천 다짐</h3><p class="mute">내가 지킬 약속을 고르고, 날마다 체크하고, 다짐 카드를 저장해요.</p></a>
+  </section>
+</main>
+<script src="data/lessons.js"></script>
+<script src="assets/js/common.js"></script>
+<script>
+(function () {
+  var D = BC.data, esc = BC.esc, got = BC.badges();
+  BC.header("home");
+  document.getElementById("faces").innerHTML = D.lessons.map(function (l) {
+    return '<a href="lesson.html?l=' + l.no + '">' + BC.face(l, 110) + "<div>" + esc(l.animal) + "</div></a>";
+  }).join("");
+  document.getElementById("cards").innerHTML = D.lessons.map(function (l) {
+    return '<a class="card lesson-card" style="--c:' + l.color + ";--soft:" + l.soft + '" href="lesson.html?l=' + l.no + '">' + BC.face(l, 58) +
+      '<div><div class="no">' + l.no + "차시</div><h3>" + esc(l.title) + "</h3><p>" + esc(l.goal) + "</p></div></a>";
+  }).join("");
+  document.getElementById("badges").innerHTML = D.lessons.map(function (l) {
+    return '<div class="b">' + BC.face(l, 72, !got[l.no]) + l.no + "차시 · " + esc(l.animal) + "</div>";
+  }).join("");
+})();
+</script>
+</body>
+</html>

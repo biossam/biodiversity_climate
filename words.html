@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>개념 사전 · 생물 다양성과 기후변화</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%235aa7e0'/><path d='M28 42c6-6 14-5 17 0s-2 9 3 13-1 10-7 9-12-6-13-11z' fill='%237cc576'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gothic+A1:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<main class="wrap">
+  <div style="margin:32px 0 12px">
+    <p class="kicker">6차시 핵심 단어</p>
+    <h1>개념 사전</h1>
+    <p class="mute">카드를 누르면 뜻을 가리거나 보여 줘요. 친구와 서로 문제를 내 보세요.</p>
+    <p style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+      <input id="find" placeholder="단어 찾기" style="font:inherit;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;min-width:200px">
+      <button class="btn line" id="hideall">뜻 모두 가리기</button>
+      <button class="btn line" id="showall">뜻 모두 보기</button>
+    </p>
+  </div>
+  <div class="card" style="margin:20px 0">
+    <h3>한눈에 보기: 기후 변화는 어떻게 동물을 위협할까요?</h3>
+    <div class="chain">
+      <div>온실가스가 많아져요</div><div>지구 온도가 올라가요 (온난화)</div><div>얼음이 녹고 해수면이 오르고, 가뭄·폭염이 늘어요</div><div>동물의 서식지와 먹이가 사라져요</div><div>생물 다양성이 줄어요</div>
+    </div>
+  </div>
+  <div id="list"></div>
+</main>
+<script src="data/lessons.js"></script>
+<script src="assets/js/common.js"></script>
+<script>
+(function () {
+  var D = BC.data, esc = BC.esc;
+  BC.header("words");
+  var list = document.getElementById("list");
+  list.innerHTML = D.lessons.map(function (l) {
+    return '<section class="sec" style="--c:' + l.color + ";--soft:" + l.soft + '" data-l><h2 style="display:flex;align-items:center;gap:10px">' + BC.face(l, 44) + l.no + "차시 · " + esc(l.animal) + '</h2><div class="terms">' +
+      l.terms.map(function (t) { return '<div class="term" data-w="' + esc(t.w + " " + t.d) + '"><b>' + esc(t.w) + '</b><div class="d">' + esc(t.d) + "</div></div>"; }).join("") + "</div></section>";
+  }).join("");
+  list.addEventListener("click", function (e) { var t = e.target.closest(".term"); if (t) t.classList.toggle("hide"); });
+  document.getElementById("hideall").onclick = function () { list.querySelectorAll(".term").forEach(function (t) { t.classList.add("hide"); }); };
+  document.getElementById("showall").onclick = function () { list.querySelectorAll(".term").forEach(function (t) { t.classList.remove("hide"); }); };
+  document.getElementById("find").oninput = function () {
+    var q = this.value.trim();
+    list.querySelectorAll("[data-l]").forEach(function (s) {
+      var any = false;
+      s.querySelectorAll(".term").forEach(function (t) { var ok = !q || t.dataset.w.indexOf(q) >= 0; t.hidden = !ok; any = any || ok; });
+      s.hidden = !any;
+    });
+  };
+})();
+</script>
+</body>
+</html>
