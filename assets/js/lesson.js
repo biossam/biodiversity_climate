@@ -30,7 +30,9 @@
   }
   function videoBox(big) {
     if (!L.video) return "";
-    var inner = L.videoUrl
+    var inner = L.videoFile
+      ? '<video controls preload="metadata" playsinline poster="' + esc(L.videoFile.replace(".mp4", ".jpg")) + '" src="' + esc(L.videoFile) + '"></video>'
+      : L.videoUrl
       ? '<div style="position:relative;padding-top:56.25%;margin-top:12px"><iframe src="' + esc(L.videoUrl) + '" style="position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:12px" allowfullscreen></iframe></div>'
       : '<p style="margin:6px 0 10px;opacity:.85;font-size:14px">수업 자료로 받은 영상 파일을 이 컴퓨터에서 바로 열어 재생해요. 영상은 인터넷에 올라가지 않아요.</p>' +
         '<label class="btn soft">🎬 영상 파일 열기<input type="file" accept="video/*" class="vfile"></label><video controls hidden></video>';

@@ -37,7 +37,7 @@
 
   h += '<section class="sec card"><h2>사이트로 수업하기</h2><ol style="margin:0;padding-left:20px;display:grid;gap:6px">' +
     "<li><b>수업 모드</b> — 차시 화면의 🖥 수업 모드를 누르면 마음 열기 → 공부할 문제 → 영상 → 핵심 단어 → 만들기(타이머) → 전시회 → 퀴즈 → 성찰 → 다음 차시 순서로 크게 띄워져요. ← → 키로 넘기고, Esc로 닫아요.</li>" +
-    "<li><b>영상</b> — 차시 화면이나 수업 모드에서 <b>🎬 영상 파일 열기</b>로 선생님 컴퓨터에 있는 영상 파일을 바로 재생해요. 파일은 인터넷에 올라가지 않아요.</li>" +
+    "<li><b>영상</b> — 차시 화면과 수업 모드에서 바로 재생돼요.</li>" +
     "<li><b>활동지</b> — 학생이 태블릿으로 차시 화면 → 활동지 탭에서 직접 쓰고 아이디어를 스케치해요. 종이로 쓸 때는 🖨 인쇄를 눌러요.</li>" +
     "<li><b>배지</b> — 활동지 ‘다 했어요’ 또는 퀴즈 만점이면 차시 배지를 받아요. 첫 화면과 다짐 카드에 모여요.</li>" +
     "<li><b>놀이터</b> — 서식지 지키기(1~5차시), 지구 온도 조절기(1~2차시), 꿀벌 수분 놀이(3차시), 거북 알 모래 온도(5차시)를 도입이나 정리에 5분쯤 써요.</li>" +
@@ -48,7 +48,7 @@
     '<div class="card"><h3>준비물</h3><p>LEGO Bricks · 재활용 재료(페트병, 상자, 병뚜껑 등) · 활동지 · 아이디어 카드 · 포스트잇 · 패들렛(온라인 갤러리) · 6차시 편지지와 색연필</p></div>' +
     '<div class="card"><h3>설문</h3><p class="mute" style="font-size:14px">수업 자료(지도안)에 있던 Microsoft Forms 설문이에요. 학생 화면에도 1차시 처음과 6차시 끝에 버튼이 있어요. 응답은 이 설문을 만든 사람의 Forms 계정에 모여요.</p>' + D.surveys.map(function (s) { return '<p><a class="btn line" target="_blank" rel="noopener" href="' + esc(s.url) + '">📝 ' + esc(s.label) + "</a></p>"; }).join("") + "</div></section>";
 
-  h += '<section class="sec card"><h3>수업 PPT와 영상</h3><p style="margin:0">원본 수업 PPT와 차시 영상에는 © The LEGO Group 저작물(사진·영상·디자인)이 들어 있어 이 공개 사이트에는 올리지 않았어요. 받은 원본 파일을 그대로 쓰시고, 이 사이트의 수업 모드·활동지·놀이·퀴즈는 수업을 돕기 위해 새로 만든 것이에요.</p></section>';
+  h += '<section class="sec card"><h3>수업 PPT</h3><p style="margin:0">원본 수업 PPT에는 © The LEGO Group 저작물이 들어 있어 사이트에 올리지 않았어요. 받은 원본 파일을 그대로 쓰세요.</p></section>';
   document.getElementById("app").innerHTML = h;
 })();
 </script>
