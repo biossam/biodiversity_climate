@@ -2,6 +2,7 @@
 (function () {
   var D = BC.data, esc = BC.esc;
   var no = +(BC.param("l") || 1);
+  var autoPresent = BC.param("present") === "1";
   var L = BC.lesson(no) || D.lessons[0];
   no = L.no;
   document.title = no + "차시 " + L.title + " · " + D.title;
@@ -164,6 +165,7 @@
 
   /* 선생님 */
   var T = '<div class="grid" style="gap:28px">';
+  T += '<div class="card" style="border-color:var(--c);display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between"><b>교실 TV로 수업하기</b><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn c" data-present>🖥 수업 모드 시작</button><a class="btn line" href="qr.html?l=' + no + '">📱 학생 접속 QR</a></span></div>';
   T += '<div class="card"><h3>학습 목표</h3><ol style="margin:0;padding-left:20px">' + L.aims.map(function (a) { return "<li>" + esc(a) + "</li>"; }).join("") + "</ol>" +
     '<p class="mute" style="margin:10px 0 0;font-size:14px">' + no + "/6차시 · 대상 " + esc(D.grade) + " · 관련 교과 " + esc(D.subjects) + "</p></div>";
   T += "<div><h2>수업 흐름 (40분)</h2>" + L.steps.map(function (s) {
@@ -175,7 +177,6 @@
   T += '<div><h2>평가 계획</h2><div class="tscroll"><table class="t"><tr><th>평가 내용</th><th>상</th><th>중</th><th>하</th><th>방법</th></tr>' + L.eval.map(function (e) {
     return "<tr><td><b>" + esc(e.what) + "</b></td><td>" + esc(e.high) + "</td><td>" + esc(e.mid) + "</td><td>" + esc(e.low) + "</td><td>" + esc(e.how) + "</td></tr>";
   }).join("") + "</table></div></div>";
-  T += '<p><a class="btn line" href="qr.html?l=' + no + '">📱 학생 접속 QR (이 차시)</a></p>';
   T += '<p class="mute" style="font-size:14px">성취기준과 지도 유의점, 전체 운영 안내는 <a href="teacher.html">선생님 화면</a>에 있어요.</p></div>';
   P("teacher").innerHTML = T;
 
@@ -209,7 +210,7 @@
     return s;
   }
   var timerId = null;
-  document.getElementById("go-present").onclick = function () {
+  function present() {
     var list = slides(), i = 0;
     var box = document.createElement("div");
     box.className = "present";
@@ -254,5 +255,8 @@
       }
     });
     show();
-  };
+  }
+  document.getElementById("go-present").onclick = present;
+  P("teacher").querySelectorAll("[data-present]").forEach(function (b) { b.onclick = present; });
+  if (autoPresent && !BC.student) present();
 })();

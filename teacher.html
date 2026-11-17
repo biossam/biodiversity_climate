@@ -26,9 +26,9 @@
     "<p>학생들이 기후 변화와 생물 다양성의 관계를 막연한 먼 미래의 일이 아니라 <b>동물의 삶에 직접 영향을 주는 문제</b>로 느끼도록, 북극곰·꿀벌·벵갈호랑이·바다거북의 사례를 차례로 탐구해요. 차시마다 디자인 싱킹으로 해결책을 구상하고, LEGO Bricks와 재활용 재료로 직접 만들고, 전시회로 나눠요.</p>" +
     "<p style=\"margin:0\">목표는 ‘나의 아이디어와 행동이 세상을 바꿀 수 있다’는 <b>자기 효능감</b>과 일상 속 <b>탄소중립 실천 의지</b>예요.</p></section>";
 
-  h += '<section class="sec"><h2>6차시 한눈에 보기</h2><div class="tscroll"><table class="t"><tr><th>차시</th><th>주제</th><th>핵심 단어</th><th>만들기 활동</th></tr>' +
+  h += '<section class="sec"><h2>6차시 한눈에 보기</h2><div class="tscroll"><table class="t"><tr><th>차시</th><th>주제</th><th>핵심 단어</th><th>만들기 활동</th><th>수업</th></tr>' +
     D.lessons.map(function (l) {
-      return '<tr><td><a href="lesson.html?l=' + l.no + '#teacher">' + l.no + "차시</a></td><td><b>" + esc(l.title) + "</b></td><td>" + l.terms.map(function (t) { return esc(t.w); }).join(", ") + "</td><td>" + esc(l.make.title) + '<br><span class="mute">예) ' + esc(l.make.ex) + "</span></td></tr>";
+      return '<tr><td><a href="lesson.html?l=' + l.no + '#teacher">' + l.no + "차시</a></td><td><b>" + esc(l.title) + "</b></td><td>" + l.terms.map(function (t) { return esc(t.w); }).join(", ") + "</td><td>" + esc(l.make.title) + '<br><span class="mute">예) ' + esc(l.make.ex) + '</span></td><td style="white-space:nowrap"><a class="btn c" style="padding:6px 12px;font-size:14px;--c:' + l.color + '" href="lesson.html?l=' + l.no + '&present=1">🖥 수업 모드</a></td></tr>';
     }).join("") + "</table></div></section>";
 
   h += '<section class="sec grid g2">' +
