@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>학생 접속 QR · 생물 다양성과 기후변화</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gothic+A1:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .qrwrap { display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center; margin-top: 24px; }
+  #qr { background: #fff; padding: 18px; border-radius: 22px; border: 1.5px solid var(--line); width: fit-content; }
+  #qr img, #qr canvas { display: block; width: min(60vw, 360px) !important; height: auto !important; }
+  .url { font-size: clamp(20px, 2.6vw, 30px); font-weight: 800; word-break: break-all; background: #fff; border-radius: 14px; padding: 12px 16px; border: 1.5px solid var(--line); }
+  .pick { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pick button { border: 1.5px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 14px; font-weight: 800; }
+  .pick button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  @media (max-width: 700px) { .qrwrap { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div style="margin:32px 0 0">
+    <p class="kicker">교실 TV에 띄워 주세요</p>
+    <h1>학생 접속 QR</h1>
+    <p class="mute">이 주소로 들어온 기기는 <b>학생 화면</b>(선생님 탭·수업 모드·선생님 메뉴 없음)으로 기억돼요. 다시 선생님 화면으로 보려면 주소 끝에 <code>?teacher=1</code>을 붙여 열어요.</p>
+  </div>
+  <div class="pick" id="pick" style="margin-top:18px"></div>
+  <div class="qrwrap">
+    <div id="qr"></div>
+    <div>
+      <p class="kicker" id="what"></p>
+      <p class="url" id="url"></p>
+      <p style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn line" id="copy">주소 복사</button><button class="btn line" id="full">⛶ 크게 보기</button></p>
+    </div>
+  </div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="data/lessons.js"></script>
+<script src="assets/js/common.js"></script>
+<script>
+(function () {
+  var D = BC.data, esc = BC.esc;
+  if (BC.student) { location.replace("./"); return; }
+  BC.header("teacher");
+  var cur = BC.param("l") ? +BC.param("l") : 0, qr = null;
+  var pick = document.getElementById("pick");
+  pick.innerHTML = '<button data-l="0">첫 화면</button>' + D.lessons.map(function (l) { return '<button data-l="' + l.no + '">' + l.no + "차시</button>"; }).join("");
+  function draw() {
+    var u = new URL("s.html" + (cur ? "?l=" + cur : ""), location.href).href;
+    pick.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", +b.dataset.l === cur); });
+    document.getElementById("what").textContent = cur ? cur + "차시 · " + BC.lesson(cur).title : "학생 첫 화면";
+    document.getElementById("url").textContent = u;
+    var box = document.getElementById("qr"); box.innerHTML = "";
+    if (window.QRCode) new QRCode(box, { text: u, width: 512, height: 512, correctLevel: QRCode.CorrectLevel.M });
+    else box.textContent = "QR을 불러오지 못했어요. 인터넷 연결을 확인해 주세요.";
+  }
+  pick.onclick = function (e) { var b = e.target.closest("[data-l]"); if (b) { cur = +b.dataset.l; draw(); } };
+  document.getElementById("copy").onclick = function () {
+    navigator.clipboard.writeText(document.getElementById("url").textContent).then(function () { BC.toast("주소를 복사했어요"); }, function () { BC.toast("복사하지 못했어요. 주소를 직접 골라 복사해 주세요"); });
+  };
+  document.getElementById("full").onclick = function () { var q = document.getElementById("qr"); q.requestFullscreen && q.requestFullscreen(); };
+  if (window.QRCode) draw();
+  else { /* 예비 CDN */
+    var sc = document.createElement("script");
+    sc.src = "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js";
+    sc.onload = sc.onerror = draw; document.head.appendChild(sc);
+  }
+})();
+</script>
+</body>
+</html>

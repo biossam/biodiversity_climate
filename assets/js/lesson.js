@@ -54,24 +54,25 @@
     '<div class="lhead">' + BC.face(L, 112) + "<div>" +
     '<p class="kicker">' + no + "차시 · " + esc(L.animal) + "</p><h1>" + esc(L.title) + "</h1>" +
     '<div class="goal"><b>공부할 문제</b> ' + esc(L.goal) + "</div>" +
-    '<p style="margin-top:12px"><button class="btn c" id="go-present">🖥 수업 모드</button></p></div></div>' +
+    '<p style="margin-top:12px" class="t-only"><button class="btn c" id="go-present">🖥 수업 모드</button></p></div></div>' +
     '<div class="tabs" role="tablist">' +
     '<button role="tab" data-t="learn">배우기</button><button role="tab" data-t="sheet">활동지</button>' +
     (L.quiz.length ? '<button role="tab" data-t="quiz">퀴즈</button>' : "") +
-    '<button role="tab" data-t="teacher">선생님</button></div>' +
+    '<button role="tab" data-t="teacher" class="t-only">선생님</button></div>' +
     '<section data-p="learn"></section><section data-p="sheet"></section><section data-p="quiz"></section><section data-p="teacher"></section>';
 
   /* 배우기 */
   var P = function (k) { return app.querySelector('[data-p="' + k + '"]'); };
   P("learn").innerHTML =
     '<div class="grid" style="gap:28px">' +
+    (no === 1 ? '<div class="card" style="border-color:var(--c)"><h3>먼저, 사전 설문에 참여해요</h3><p class="mute">환경 문제에 대한 내 생각을 투표해요.</p>' + BC.surveyBtn(0) + "</div>" : "") +
     "<div><h2>마음 열기</h2>" + qs(L.open) + "</div>" +
     "<div><h2>학습 활동</h2>" + '<div class="flow">' + L.activities.map(function (a, i) { return "<div><b>활동 " + (i + 1) + "</b>" + esc(a) + "</div>"; }).join("") + "</div></div>" +
     (L.video ? "<div><h2>영상 보기</h2>" + videoBox() + "</div>" : "") +
     '<div><h2 style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">오늘의 핵심 단어 <button class="btn line" id="hide-terms" style="font-family:Gothic A1;font-size:14px">뜻 가리고 맞혀 보기</button></h2><div id="terms">' + terms(false) + "</div></div>" +
     '<div class="card">' + learn() + "</div>" +
     '<div class="card"><p class="kicker">' + (no === 6 ? "변화 만들기" : "만들어 볼까요") + "</p><h3>" + esc(L.make.title) + "</h3><p>" + esc(L.make.text) + '</p><p class="mute" style="margin:0">예시) ' + esc(L.make.ex) + "</p></div>" +
-    (no < 6 ? '<p><a class="btn line" href="play.html">🎮 놀이터에서 더 알아보기</a></p>' : '<p><a class="btn line" href="pledge.html">🌱 실천 다짐 쓰러 가기</a></p>') +
+    (no < 6 ? '<p><a class="btn line" href="play.html">🎮 놀이터에서 더 알아보기</a></p>' : '<div class="card" style="border-color:var(--c)"><h3>마지막으로, 사후 설문에 참여해요</h3><p class="mute">프로젝트를 마친 지금의 내 생각을 알려 주세요.</p><p style="display:flex;gap:8px;flex-wrap:wrap">' + BC.surveyBtn(1) + '<a class="btn line" href="pledge.html">🌱 실천 다짐 쓰러 가기</a></p></div>') +
     "</div>";
   bindVideo(P("learn"));
   var hidden = false;
@@ -174,6 +175,7 @@
   T += '<div><h2>평가 계획</h2><div class="tscroll"><table class="t"><tr><th>평가 내용</th><th>상</th><th>중</th><th>하</th><th>방법</th></tr>' + L.eval.map(function (e) {
     return "<tr><td><b>" + esc(e.what) + "</b></td><td>" + esc(e.high) + "</td><td>" + esc(e.mid) + "</td><td>" + esc(e.low) + "</td><td>" + esc(e.how) + "</td></tr>";
   }).join("") + "</table></div></div>";
+  T += '<p><a class="btn line" href="qr.html?l=' + no + '">📱 학생 접속 QR (이 차시)</a></p>';
   T += '<p class="mute" style="font-size:14px">성취기준과 지도 유의점, 전체 운영 안내는 <a href="teacher.html">선생님 화면</a>에 있어요.</p></div>';
   P("teacher").innerHTML = T;
 
@@ -185,7 +187,7 @@
   }
   app.querySelector(".tabs").addEventListener("click", function (e) { var b = e.target.closest("[data-t]"); if (b) tab(b.dataset.t); });
   var h = location.hash.slice(1);
-  tab(["learn", "sheet", "quiz", "teacher"].indexOf(h) >= 0 && (h !== "quiz" || L.quiz.length) ? h : "learn");
+  tab(["learn", "sheet", "quiz", "teacher"].indexOf(h) >= 0 && (h !== "quiz" || L.quiz.length) && !(h === "teacher" && BC.student) ? h : "learn");
 
   /* ---------- 수업 모드 ---------- */
   function slides() {

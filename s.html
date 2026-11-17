@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>생물 다양성과 기후변화 · 학생</title>
+</head>
+<body>
+<p style="font-family:sans-serif;text-align:center;margin-top:40vh">학생 화면으로 이동하는 중…</p>
+<script>
+/* 학생 전용 입구: 이 기기를 학생 모드로 기억하고 첫 화면(또는 ?l=차시)으로 보냄 */
+try { localStorage.setItem("biocl:mode", JSON.stringify("student")); } catch (e) {}
+var l = new URLSearchParams(location.search).get("l");
+location.replace(l ? "lesson.html?l=" + encodeURIComponent(l) : "./");
+</script>
+</body>
+</html>

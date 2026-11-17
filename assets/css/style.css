@@ -189,3 +189,6 @@ table.t th { background: var(--soft); white-space: nowrap; }
   .present .bar [data-full] { display: none; }
   .present .bar .pg { font-size: 13px; white-space: nowrap; }
 }
+
+/* 학생 모드에서 숨김 */
+.student .t-only { display: none !important; }

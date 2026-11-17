@@ -82,8 +82,14 @@
   };
 
   /* 머리글 */
+  /* 학생 모드: s.html로 들어오면 이 기기에 기억, ?teacher=1 로 풀기 */
+  if (BC.param("teacher") === "1") BC.set("mode", "");
+  BC.student = BC.get("mode", "") === "student";
+  if (BC.student) document.documentElement.classList.add("student");
+
   BC.header = function (cur) {
-    var links = [["./", "처음", "home"], ["lesson.html?l=1", "6차시", "lesson"], ["words.html", "개념 사전", "words"], ["play.html", "놀이터", "play"], ["pledge.html", "실천 다짐", "pledge"], ["teacher.html", "선생님", "teacher"]];
+    var links = [["./", "처음", "home"], ["lesson.html?l=1", "6차시", "lesson"], ["words.html", "개념 사전", "words"], ["play.html", "놀이터", "play"], ["pledge.html", "실천 다짐", "pledge"]];
+    if (!BC.student) links.push(["teacher.html", "선생님", "teacher"]);
     var h = document.createElement("header");
     h.className = "top";
     h.innerHTML = '<div class="wrap top-in"><a class="brand" href="./">' + BC.face(D.lessons[0], 34) + "<span>" + BC.esc(D.title) + "</span></a>" +
@@ -95,6 +101,12 @@
     f.className = "foot";
     f.innerHTML = '<div class="wrap"><p>' + BC.esc(D.credit) + "</p><p>LEGO®는 LEGO Group의 상표입니다. 이 사이트의 그림·놀이·퀴즈는 수업을 돕기 위해 새로 만든 것입니다.</p></div>";
     document.body.appendChild(f);
+  };
+
+  /* 설문 버튼 (학생도 보임) */
+  BC.surveyBtn = function (i) {
+    var s = D.surveys[i];
+    return '<a class="btn c" target="_blank" rel="noopener" href="' + BC.esc(s.url) + '">📝 ' + BC.esc(s.label) + " 하러 가기</a>";
   };
 
   BC.toast = function (msg) {
